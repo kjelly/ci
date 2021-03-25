@@ -1,0 +1,29 @@
+format_version: 10
+pipelines:
+  upgrade-system:
+    group: defaultGroup
+    label_template: ${COUNT}
+    lock_behavior: none
+    display_order: -1
+    materials:
+      ci:
+        git: https://github.com/kjelly/ci
+        shallow_clone: false
+        auto_update: false
+        branch: main
+    stages:
+    - upgrade-system:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          upgrade-system:
+            timeout: 0
+            tasks:
+            - exec:
+                command: /nfs/ansible-playbook/upgrade-system/upgrade.sh
+                run_if: passed
+
